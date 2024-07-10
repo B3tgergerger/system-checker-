@@ -66,7 +66,7 @@ class SystemChecker(QWidget):
         layout.addWidget(check_btn)
 
         self.setLayout(layout)
-        self.setWindowTitle('System Checker')
+        self.setWindowTitle('System Checker by Mahmoud')
         self.setGeometry(300, 300, 600, 800)
         self.show()
 
@@ -210,7 +210,7 @@ class SystemChecker(QWidget):
     def check_system_info(self):
         system_info = platform.uname()
         self.system_info_label.setText(f'System Info: {system_info.system} {system_info.release}, Node: {system_info.node}, Machine: {system_info.machine}')
-        self.system_info_label.setStyleSheet('color: black;')
+        self.system_info_label.setStyleSheet('color:black;')
 
     def check_audio_devices(self):
         try:
