@@ -118,7 +118,7 @@ class SystemChecker(QWidget):
             smart_status = "OK" if b"PASSED" in smart_output else "FAIL"
         except Exception as e:
             smart_status = f"Error: {str(e)}"
-        
+
         self.smart_label.setText(f'SMART Status: {smart_status}')
         if smart_status != "OK":
             self.smart_label.setStyleSheet('color: red;')
@@ -209,7 +209,7 @@ class SystemChecker(QWidget):
 
     def check_system_info(self):
         system_info = platform.uname()
-        self.system_info_label.setText(f'System Info: {system_info.system} {system_info.node} {system_info.release} {system_info.version} {system_info.machine}')
+        self.system_info_label.setText(f'System Info: {system_info.system} {system_info.release}, Node: {system_info.node}, Machine: {system_info.machine}')
         self.system_info_label.setStyleSheet('color: black;')
 
     def check_audio_devices(self):
@@ -224,17 +224,12 @@ class SystemChecker(QWidget):
 
     def check_installed_software(self):
         try:
-            if sys.platform == "win32":
-                installed_software = subprocess.check_output(['wmic', 'product', 'get', 'name'])
-                software_list = installed_software.decode().split('\r\r\n')
-                self.software_list.setText("\n".join(software_list))
-                self.software_label.setText('Installed Software:')
-                self.software_label.setStyleSheet('color: black;')
-            else:
-                self.software_label.setText('Installed Software: Not available for this OS')
-                self.software_label.setStyleSheet('color: red;')
+            software_output = subprocess.check_output(['wmic', 'product', 'get', 'name'])
+            software_list = software_output.decode().split('\n')[1:]
+            self.software_list.setPlainText("\n".join(software_list))
+            self.software_label.setStyleSheet('color: black;')
         except Exception as e:
-            self.software_label.setText(f'Installed Software: Error: {str(e)}')
+            self.software_list.setPlainText(f'Error: {str(e)}')
             self.software_label.setStyleSheet('color: red;')
 
 if __name__ == '__main__':
